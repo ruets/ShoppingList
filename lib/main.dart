@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'src/components/List.dart';
+import 'src/components/Cart.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -12,10 +15,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      // Light and dark themes
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        // brightness: Brightness.light,
+        primarySwatch: Colors.deepPurple,
+        primaryColor: Colors.deepPurple,
+        cardColor: Colors.black,
       ),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      //   primarySwatch: Colors.deepPurple,
+      //   primaryColor: Colors.deepPurple,
+      //   cardColor: Colors.white,
+      // ),
       home: const MyHomePage(),
     );
   }
@@ -47,13 +59,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     switch (_selectedIndex) {
       case 0:
-        page = const Text('List');
+        page = const List();
         break;
       case 1:
-        page = const Text('Cart');
-        break;
-      case 2:
-        page = const Text('Settings');
+        page = const Cart();
         break;
       default:
         throw UnimplementedError('no widget for $_selectedIndex');
@@ -67,24 +76,37 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'List',
+            icon: Icon(Icons.list_alt),
+            label: 'Liste de courses',
           ),
 
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            label: 'Panier / Caddie',
           ),
         ],
 
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Theme.of(context).primaryColor,
         onTap: _onItemTapped,
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (_selectedIndex == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const List()), // TODO: add addItemToList page
+            );
+          } else if (_selectedIndex == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Cart()), // TODO: add addItemToCart page
+            );
+          }
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(Icons.add),
       ),
     );
   }
