@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/model/Api.dart';
 
-void main() {
-  runApp(const Cart());
-}
-
 class Cart extends StatefulWidget {
   const Cart({super.key});
 
