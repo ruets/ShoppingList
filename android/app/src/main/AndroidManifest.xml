@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permissions to access internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:label="ShoppingList"
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -30,7 +34,4 @@
             android:value="2" />
 
     </application>
-
-    <!-- Permissions to access internet -->
-    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
