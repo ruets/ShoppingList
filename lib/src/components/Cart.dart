@@ -1,4 +1,7 @@
+import 'package:ShoppingList/src/model/Item.dart';
 import 'package:flutter/material.dart';
+
+import 'package:ShoppingList/src/components/ItemCard.dart';
 
 import 'package:ShoppingList/src/model/Api.dart';
 
@@ -35,28 +38,7 @@ class _CartState extends State<Cart> {
                   final item = snapshot.data?[index];
 
                   if (item != null) {
-                    return ListTile(
-                      title:
-                      Row(
-                        children: [
-                          if (item.count != null)
-                            Text('${item.count}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                          Text(' ${item.name}'),
-                        ],
-                      ),
-                      leading: const Icon(Icons.check_box_outlined),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      shape: const Border(
-                        bottom: BorderSide(
-                          color: Colors.grey,
-                          width: 1,
-                        ),
-                      ),
-
-                      onTap: () {
-                        Navigator.pushNamed(context, '/item', arguments: item); // TODO: add moveItemToList page
-                      },
-                    );
+                    return ItemCard(item: item);
                   }
                 },
               );
