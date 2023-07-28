@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'src/components/List.dart';
 import 'src/components/Cart.dart';
 
+import 'src/components/ItemView.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -20,7 +22,6 @@ class MyApp extends StatelessWidget {
         // brightness: Brightness.light,
         primarySwatch: Colors.deepPurple,
         primaryColor: Colors.deepPurple,
-        cardColor: Colors.black,
       ),
       // darkTheme: ThemeData(
       //   brightness: Brightness.dark,
@@ -93,17 +94,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (_selectedIndex == 0) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const List()), // TODO: add addItemToList page
+              MaterialPageRoute(builder: (context) => ItemView(
+                inCart: _selectedIndex == 1 ? true : false,
+              )),
             );
-          } else if (_selectedIndex == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Cart()), // TODO: add addItemToCart page
-            );
-          }
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.add),
