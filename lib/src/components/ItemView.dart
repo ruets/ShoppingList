@@ -154,11 +154,15 @@ class _ItemViewState extends State<ItemView> {
 
               ].map((widget) => Padding(
                 padding: const EdgeInsets.all(16),
-                child: widget,
+                child: widget
               )).toList(),
             ),
           ),
-          (_name != null && _inCart != null) ? ItemCard(item: Item(null, _name!, _inCart!, _price, _count)) : Container(),
+            (_inCart == false && _name != null)
+              ? ItemCard(item: Item(null, _name!, _inCart!, _price, _count))
+            : (_inCart == true && _name != null && _price != null && _count != null)
+              ? ItemCard(item: Item(null, _name!, _inCart!, _price, _count))
+            : Container(),
         ],
       ),
     );
