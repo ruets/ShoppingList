@@ -43,4 +43,11 @@ class Api {
   static Future<void> deleteItem(Item item) async {
     await http.delete(Uri.parse('${Api._url}/${item.getId()}'));
   }
+
+  static Future<List<Item>> clearItems() async {
+    final response = await http.delete(Uri.parse(Api._url));
+    final data = jsonDecode(response.body) as List;
+
+    return data.map((json) => Item.fromJson(json)).toList();
+  }
 }

@@ -15,11 +15,24 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   // get items from api
   var items = Api.fetchItems(Api.cart);
+  var totalPrice = 0.0;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Total: ${totalPrice.toStringAsFixed(2)}€'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                items = Api.clearItems();
+              });
+            },
+          ),
+        ],
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
@@ -38,6 +51,8 @@ class _CartState extends State<Cart> {
                   final item = snapshot.data?[index];
 
                   if (item != null) {
+                    totalPrice += (item.count != null ? (item.price! * item.count!) : item.price)!;
+
                     return ItemCard(item: item);
                   }
                 },
