@@ -15,4 +15,32 @@ class Api {
 
     return data.map((json) => Item.fromJson(json)).toList();
   }
+
+  static Future<Item> addItem(String category, Item item) async {
+    final response = await http.post(
+      Uri.parse('${Api._url}/$category'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(item.toJson()),
+    );
+
+    return Item.fromJson(jsonDecode(response.body));
+  }
+
+  static Future<Item> updateItem(Item item) async {
+    final response = await http.put(
+      Uri.parse('${Api._url}/${item.getId()}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(item.toJson()),
+    );
+
+    return Item.fromJson(jsonDecode(response.body));
+  }
+
+  static Future<void> deleteItem(Item item) async {
+    await http.delete(Uri.parse('${Api._url}/${item.getId()}'));
+  }
 }
