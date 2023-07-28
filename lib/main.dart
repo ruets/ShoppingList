@@ -19,16 +19,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       // Light and dark themes
       theme: ThemeData(
-        // brightness: Brightness.light,
         primarySwatch: Colors.deepPurple,
         primaryColor: Colors.deepPurple,
       ),
-      // darkTheme: ThemeData(
-      //   brightness: Brightness.dark,
-      //   primarySwatch: Colors.deepPurple,
-      //   primaryColor: Colors.deepPurple,
-      //   cardColor: Colors.white,
-      // ),
       home: const MyHomePage(),
     );
   }
