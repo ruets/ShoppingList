@@ -4,6 +4,8 @@ import 'package:ShoppingList/src/components/ItemCard.dart';
 
 import 'package:ShoppingList/src/model/Api.dart';
 
+import 'Confirmation.dart';
+
 class List extends StatefulWidget {
   const List({super.key});
 
@@ -17,8 +19,38 @@ class _ListState extends State<List> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      appBar: AppBar(
+        title: FutureBuilder(
+          future: items,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Text('Total: ${snapshot.data?.length}');
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ?').then((value) {
+                if (value != null && value) {
+                  setState(() {
+                    Api.clearItems();
+                    items = Api.fetchItems(Api.list);
+                  });
+                }
+              });
+            },
+          ),
+        ],
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
