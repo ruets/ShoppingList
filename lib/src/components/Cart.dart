@@ -2,6 +2,7 @@ import 'package:ShoppingList/src/model/Item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/components/ItemCard.dart';
+import 'package:ShoppingList/src/components/Confirmation.dart';
 
 import 'package:ShoppingList/src/model/Api.dart';
 
@@ -15,19 +16,41 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   // get items from api
   var items = Api.fetchItems(Api.cart);
-  var totalPrice = 0.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Total: ${totalPrice.toStringAsFixed(2)}€'),
+        title: FutureBuilder(
+          future: items,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              double totalPriceTemp = 0;
+              for (int i = 0; i < snapshot.data!.length; i++) {
+                totalPriceTemp += snapshot.data![i].price! * snapshot.data![i].count!;
+
+              }
+              return Text('Total: $totalPriceTemp');
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              setState(() {
-                items = Api.clearItems();
+              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments du panier ?').then((value) {
+                if (value != null && value) {
+                  setState(() {
+                    Api.clearItems();
+                    items = Api.fetchItems(Api.list);
+                  });
+                }
               });
             },
           ),
@@ -51,8 +74,6 @@ class _CartState extends State<Cart> {
                   final item = snapshot.data?[index];
 
                   if (item != null) {
-                    totalPrice += (item.count != null ? (item.price! * item.count!) : item.price)!;
-
                     return ItemCard(item: item);
                   }
                 },
