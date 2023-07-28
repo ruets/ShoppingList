@@ -25,7 +25,7 @@ class _ListState extends State<List> {
           future: items,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Text('Total: ${snapshot.data?.length}');
+              return Text('Nombre total d\'articles : ${snapshot.data?.length}');
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }

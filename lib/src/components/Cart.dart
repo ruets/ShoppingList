@@ -30,7 +30,7 @@ class _CartState extends State<Cart> {
                 totalPriceTemp += snapshot.data![i].price! * snapshot.data![i].count!;
 
               }
-              return Text('Total: $totalPriceTemp');
+              return Text('Prix total: $totalPriceTemp');
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }
