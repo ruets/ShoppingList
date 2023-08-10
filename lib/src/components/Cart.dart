@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/components/ItemCard.dart';
 import 'package:ShoppingList/src/components/Confirmation.dart';
+import 'package:ShoppingList/src/components/Settings.dart';
 
 import 'package:ShoppingList/src/model/Api.dart';
 
@@ -42,16 +43,12 @@ class _CartState extends State<Cart> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete),
+            icon: const Icon(Icons.settings),
             onPressed: () {
-              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments du panier ?').then((value) {
-                if (value != null && value) {
-                  setState(() {
-                    Api.clearItems();
-                    items = Api.fetchItems(Api.list);
-                  });
-                }
-              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Settings()),
+              );
             },
           ),
         ],

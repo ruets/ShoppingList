@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future<bool?> showConfirmationDialog(BuildContext context, String title, String content) async {
+Future<bool?> showConfirmationDialog(BuildContext context, String title, String content, String cancel, String confirm) async {
   return showDialog<bool>(
     context: context,
     barrierDismissible: false,
@@ -10,13 +10,13 @@ Future<bool?> showConfirmationDialog(BuildContext context, String title, String 
         content: Text(content),
         actions: <Widget>[
           TextButton(
-            child: const Text('Cancel'),
+            child: Text(cancel),
             onPressed: () {
               Navigator.of(context).pop(false);
             },
           ),
           TextButton(
-            child: const Text('Delete'),
+            child: Text(confirm),
             onPressed: () {
               Navigator.of(context).pop(true);
             },
