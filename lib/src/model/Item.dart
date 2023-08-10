@@ -1,5 +1,5 @@
 class Item {
-  final String? id;
+  final int? id;
   final String name;
   final bool inCart;
   final double? price;
@@ -19,7 +19,7 @@ class Item {
       price =  json['price'] == null ? null : json['price'].toDouble(),
       count = json['count'];
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     '_id': id,
     'name': name,
     'inCart': inCart,
@@ -27,7 +27,7 @@ class Item {
     'count': count,
   };
 
-  String? getId() { return id; }
+  int? getId() { return id; }
   String getName() { return name; }
   bool getInCart() { return inCart; }
   double? getPrice() { return price; }
@@ -35,6 +35,6 @@ class Item {
 
   @override
   String toString() {
-    return name;
+    return 'Item{id: $id, name: $name, inCart: $inCart, price: $price, count: $count}';
   }
 }

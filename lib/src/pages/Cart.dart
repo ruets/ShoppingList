@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:ShoppingList/src/components/ItemCard.dart';
 import 'package:ShoppingList/src/pages/Settings.dart';
 
-import 'package:ShoppingList/src/model/Api.dart';
+import 'package:ShoppingList/src/data/db.dart' as db;
+
+import '../components/Confirmation.dart';
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -14,7 +16,7 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   // get items from api
-  var items = Api.fetchItems(Api.cart);
+  var items = db.getItems(db.cart);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,16 @@ class _CartState extends State<Cart> {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments du panier ?', 'Annuler', 'Supprimer').then((value) {
+                if (value != null && value) {
+                  db.deleteAllItems(db.cart);
+                }
+              });
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
@@ -54,7 +66,7 @@ class _CartState extends State<Cart> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            items = Api.fetchItems(Api.cart);
+            items = db.getItems(db.cart);
           });
         },
 

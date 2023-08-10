@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:ShoppingList/src/components/ItemCard.dart';
 import 'package:ShoppingList/src/pages/Settings.dart';
 
-import 'package:ShoppingList/src/model/Api.dart';
+import 'package:ShoppingList/src/data/db.dart' as db;
+
+import '../components/Confirmation.dart';
 
 
 class List extends StatefulWidget {
@@ -15,7 +17,7 @@ class List extends StatefulWidget {
 
 class _ListState extends State<List> {
   // get items from api
-  var items = Api.fetchItems(Api.list);
+  var items = db.getItems(db.list);
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,16 @@ class _ListState extends State<List> {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ?', 'Annuler', 'Supprimer').then((value) {
+                if (value != null && value) {
+                  db.deleteAllItems(db.list);
+                }
+              });
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
@@ -50,7 +62,7 @@ class _ListState extends State<List> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            items = Api.fetchItems(Api.list);
+            items = db.getItems(db.list);
           });
         },
 

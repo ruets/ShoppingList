@@ -5,7 +5,10 @@ import 'src/pages/Cart.dart';
 
 import 'src/pages/ItemView.dart';
 
+import 'package:ShoppingList/src/data/db.dart' as db;
+
 void main() {
+  db.init();
   runApp(const MyApp());
 }
 

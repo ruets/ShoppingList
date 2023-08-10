@@ -4,7 +4,7 @@ import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 import 'package:ShoppingList/src/model/Item.dart';
-import 'package:ShoppingList/src/model/Api.dart';
+import 'package:ShoppingList/src/data/db.dart' as db;
 
 class ItemView extends StatefulWidget {
   const ItemView({super.key, this.item, this.inCart});
@@ -44,15 +44,21 @@ class _ItemViewState extends State<ItemView> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: () {
+            onPressed: () async {
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
                 if (widget.inCart != null) {
-                  String category = _inCart! ? Api.cart : Api.list;
-                  Api.addItem(category, Item(null, _name!, _inCart!, _price, _count));
-                  Navigator.pop(context);
+                  if (!await db.insertItem(Item(null, _name!.trim(), widget.inCart!, _price, _count))) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Cet article est déjà dans la liste de courses'),
+                      ),
+                    );
+                  } else {
+                    Navigator.pop(context);
+                  }
                 } else {
-                  Api.updateItem(Item(widget.item?.id, _name!, _inCart!, _price, _count));
+                  db.updateItem(Item(widget.item!.id, _name!.trim(), _inCart!, _price, _count));
                   Navigator.pop(context);
                 }
               }
@@ -63,7 +69,7 @@ class _ItemViewState extends State<ItemView> {
             icon: Icon(Icons.delete),
             onPressed: () {
               if (widget.item != null) {
-                Api.deleteItem(widget.item!);
+                db.deleteItem(widget.item!.id!);
                 Navigator.pop(context);
               }
             },
@@ -77,7 +83,7 @@ class _ItemViewState extends State<ItemView> {
             child: Column(
               children: [
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Article',
                   ),
                   validator: (value) {
@@ -116,11 +122,11 @@ class _ItemViewState extends State<ItemView> {
 
                 Column(
                   children: [
-                    const Text('Quantité (optionnel)'),
+                    const Text('Quantité'),
                     NumberPicker(
-                      minValue: 0,
+                      minValue: _inCart == true ? 1 : 0,
                       maxValue: 100,
-                      value: _count ?? 0,
+                      value: _count ?? (_inCart == true ? 1 : 0),
                       onChanged: (value) {
                         setState(() {
                           _count = value;
@@ -134,7 +140,7 @@ class _ItemViewState extends State<ItemView> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Prix (optionnel)',
+                    labelText: 'Prix',
                   ),
                   validator: (value) {
                     if (_inCart == true && (value == null || value.isEmpty)) {

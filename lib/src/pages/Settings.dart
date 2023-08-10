@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/components/Confirmation.dart';
 
-import '../model/Api.dart';
+import 'package:ShoppingList/src/data/db.dart' as db;
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -22,9 +22,9 @@ class Settings extends StatelessWidget {
             child: ListTile(
               title: const Text('Vider la liste'),
               onTap: () {
-                showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ?', 'Annuler', 'Supprimer').then((value) {
+                showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ET du panier ?', 'Annuler', 'Supprimer').then((value) {
                   if (value != null && value) {
-                    Api.clearItems();
+                    db.deleteAllItems(null);
                   }
                 });
               },
