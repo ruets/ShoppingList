@@ -16,7 +16,7 @@ class Item {
     : id = json['_id'],
       name = json['name'],
       inCart = json['inCart'],
-      price = json['price'],
+      price =  json['price'] == null ? null : json['price'].toDouble(),
       count = json['count'];
 
   Map<String, dynamic> toJson() => {
