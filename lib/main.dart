@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'src/components/List.dart';
-import 'src/components/Cart.dart';
+import 'src/pages/List.dart';
+import 'src/pages/Cart.dart';
 
-import 'src/components/ItemView.dart';
+import 'src/pages/ItemView.dart';
 
 void main() {
   runApp(const MyApp());

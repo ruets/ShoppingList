@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/model/Item.dart';
 
-import 'package:ShoppingList/src/components/ItemView.dart';
+import 'package:ShoppingList/src/pages/ItemView.dart';
 
 class ItemCard extends StatelessWidget {
   const ItemCard({Key? key, required this.item}) : super(key: key);

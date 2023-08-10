@@ -1,22 +1,22 @@
+import 'package:ShoppingList/src/model/Item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/components/ItemCard.dart';
 import 'package:ShoppingList/src/components/Confirmation.dart';
-import 'package:ShoppingList/src/components/Settings.dart';
+import 'package:ShoppingList/src/pages/Settings.dart';
 
 import 'package:ShoppingList/src/model/Api.dart';
 
-
-class List extends StatefulWidget {
-  const List({super.key});
+class Cart extends StatefulWidget {
+  const Cart({super.key});
 
   @override
-  State<List> createState() => _ListState();
+  State<Cart> createState() => _CartState();
 }
 
-class _ListState extends State<List> {
+class _CartState extends State<Cart> {
   // get items from api
-  var items = Api.fetchItems(Api.list);
+  var items = Api.fetchItems(Api.cart);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,12 @@ class _ListState extends State<List> {
           future: items,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Text('Nombre total d\'articles : ${snapshot.data?.length}');
+              double totalPriceTemp = 0;
+              for (int i = 0; i < snapshot.data!.length; i++) {
+                totalPriceTemp += snapshot.data![i].price! * snapshot.data![i].count!;
+
+              }
+              return Text('Prix total: $totalPriceTemp');
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }
@@ -51,7 +56,7 @@ class _ListState extends State<List> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            items = Api.fetchItems(Api.list);
+            items = Api.fetchItems(Api.cart);
           });
         },
 
@@ -68,7 +73,6 @@ class _ListState extends State<List> {
                   if (item != null) {
                     return ItemCard(item: item);
                   }
-                  return null;
                 },
               );
             } else if (snapshot.hasError) {
