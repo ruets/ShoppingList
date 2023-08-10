@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/components/ItemCard.dart';
-import 'package:ShoppingList/src/components/Confirmation.dart';
 import 'package:ShoppingList/src/pages/Settings.dart';
 
 import 'package:ShoppingList/src/model/Api.dart';

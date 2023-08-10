@@ -1,8 +1,6 @@
-import 'package:ShoppingList/src/model/Item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/components/ItemCard.dart';
-import 'package:ShoppingList/src/components/Confirmation.dart';
 import 'package:ShoppingList/src/pages/Settings.dart';
 
 import 'package:ShoppingList/src/model/Api.dart';
@@ -73,6 +71,7 @@ class _CartState extends State<Cart> {
                   if (item != null) {
                     return ItemCard(item: item);
                   }
+                  return null;
                 },
               );
             } else if (snapshot.hasError) {
