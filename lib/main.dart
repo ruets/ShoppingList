@@ -83,19 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
         selectedItemColor: Theme.of(context).primaryColor,
         onTap: _onItemTapped,
       ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ItemView(
-                inCart: _selectedIndex == 1 ? true : false,
-              )),
-            );
-        },
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }

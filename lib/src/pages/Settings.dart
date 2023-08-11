@@ -1,8 +1,10 @@
+import 'package:ShoppingList/src/model/Item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/components/Confirmation.dart';
 
 import 'package:ShoppingList/src/data/db.dart' as db;
+import 'package:ShoppingList/src/data/FilePersistence.dart' as FilePersistence;
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -41,12 +43,11 @@ class Settings extends StatelessWidget {
             color: Colors.white60,
             child: ListTile(
               title: const Text('Sauvegarde vers un fichier et partager'),
-              onTap: () {
-                showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment sauvegarder la liste ?', 'Annuler', 'Sauvegarder').then((value) {
-                  if (value != null && value) {
-                    // TODO: save to file
-                  }
-                });
+              onTap: () async {
+                    List<Item> list = await db.getItems(db.list);
+                    List<Item> cart = await db.getItems(db.cart);
+
+                    FilePersistence.SaveToFile(list, cart);
               },
             ),
           ),

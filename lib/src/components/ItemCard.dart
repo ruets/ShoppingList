@@ -5,9 +5,10 @@ import 'package:ShoppingList/src/model/Item.dart';
 import 'package:ShoppingList/src/pages/ItemView.dart';
 
 class ItemCard extends StatelessWidget {
-  const ItemCard({Key? key, required this.item}) : super(key: key);
+  const ItemCard({Key? key, required this.item, required this.onTap}) : super(key: key);
 
   final Item item;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +30,7 @@ class ItemCard extends StatelessWidget {
             title: Text(item.name),
             trailing: Icon(Icons.arrow_forward_ios),
 
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ItemView(item: item),
-                ),
-              );
-            },
+            onTap: onTap,
           ),
         ),
       );
@@ -59,14 +53,7 @@ class ItemCard extends StatelessWidget {
             subtitle: Text(item.count != null ? 'Total: ${(item.price! * item.count!)}€' : 'Total: ${item.price}€'),
             trailing: Text('${item.price!.toStringAsFixed(2)}€'),
 
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ItemView(item: item),
-                ),
-              );
-            },
+            onTap: onTap,
           ),
         ),
       );

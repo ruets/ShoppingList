@@ -6,6 +6,7 @@ import 'package:ShoppingList/src/pages/Settings.dart';
 import 'package:ShoppingList/src/data/db.dart' as db;
 
 import '../components/Confirmation.dart';
+import 'ItemView.dart';
 
 
 class List extends StatefulWidget {
@@ -62,7 +63,7 @@ class _ListState extends State<List> {
                 MaterialPageRoute(builder: (context) => const Settings()),
               ).then((value) {
                 setState(() {
-                  items = db.getItems(db.cart);
+                  items = db.getItems(db.list);
                 });
               });
             },
@@ -87,7 +88,19 @@ class _ListState extends State<List> {
                   final item = snapshot.data?[index];
 
                   if (item != null) {
-                    return ItemCard(item: item);
+                    return ItemCard(
+                      item: item,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ItemView(item: item)),
+                        ).then((value) {
+                          setState(() {
+                            items = db.getItems(db.list);
+                          });
+                        });
+                      },
+                    );
                   }
                   return null;
                 },
@@ -101,6 +114,22 @@ class _ListState extends State<List> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ItemView(
+              inCart: false,
+            )),
+          ).then((value) {
+            setState(() {
+              items = db.getItems(db.list);
+            });
+          });
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(Icons.add),
       ),
     );
   }

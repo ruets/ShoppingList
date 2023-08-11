@@ -1,3 +1,4 @@
+import 'package:ShoppingList/src/components/Confirmation.dart';
 import 'package:ShoppingList/src/components/ItemCard.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
@@ -43,12 +44,33 @@ class _ItemViewState extends State<ItemView> {
         title: Text(_name ?? 'Add item'),
         actions: <Widget>[
           IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: widget.item == null ? null : () async {
+              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer cet article ?', 'Annuler', 'Supprimer').then((value) async {
+                if (value != null && value) {
+                  if (!await db.deleteItem(widget.item!.id!)) {
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Article non supprimé'),
+                      ),
+                    );
+                  } else {
+                    Navigator.pop(context);
+                  }
+                }
+              });
+            },
+            disabledColor: Colors.grey,
+          ),
+
+          IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
                 if (widget.inCart != null) {
-                  if (!await db.insertItem(Item(null, _name!.trim(), widget.inCart!, _price, _count))) {
+                  if (!await db.insertItem(Item(null, _name!.trim(), _inCart!, _price, _count))) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Cet article est déjà dans la liste de courses'),
@@ -67,24 +89,6 @@ class _ItemViewState extends State<ItemView> {
                   } else {
                     Navigator.pop(context);
                   }
-                }
-              }
-            },
-          ),
-
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () async {
-              if (widget.item != null) {
-                if (!await db.deleteItem(widget.item!.id!)) {
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Article non supprimé'),
-                    ),
-                  );
-                } else {
-                  Navigator.pop(context);
                 }
               }
             },
@@ -180,9 +184,9 @@ class _ItemViewState extends State<ItemView> {
             ),
           ),
             (_inCart == false && _name != null)
-              ? ItemCard(item: Item(null, _name!, _inCart!, _price, _count))
+              ? ItemCard(item: Item(null, _name!, _inCart!, _price, _count), onTap: null,)
             : (_inCart == true && _name != null && _price != null && _count != null)
-              ? ItemCard(item: Item(null, _name!, _inCart!, _price, _count))
+              ? ItemCard(item: Item(null, _name!, _inCart!, _price, _count), onTap: null,)
             : Container(),
         ],
       ),
