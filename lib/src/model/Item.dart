@@ -35,6 +35,12 @@ class Item {
 
   @override
   String toString() {
-    return 'Item{id: $id, name: $name, inCart: $inCart, price: $price, count: $count}';
+    return '{\n'
+        '  "_id": $id,\n'
+        '  "name": "$name",\n'
+        '  "inCart": $inCart,\n'
+        '  "price": $price,\n'
+        '  "count": $count\n'
+        '}';
   }
 }

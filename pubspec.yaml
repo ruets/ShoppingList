@@ -40,6 +40,8 @@ dependencies:
   custom_radio_grouped_button: ^2.2.0
   sqflite: ^2.3.0
   path: ^1.8.3
+  path_provider: ^2.1.0
+  share: ^2.0.4
 
 dev_dependencies:
   flutter_test:
