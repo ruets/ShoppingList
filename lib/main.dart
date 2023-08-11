@@ -8,8 +8,8 @@ import 'src/pages/ItemView.dart';
 import 'package:ShoppingList/src/data/db.dart' as db;
 
 void main() {
-  db.init();
-  runApp(const MyApp());
+  db.init()
+    .then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
