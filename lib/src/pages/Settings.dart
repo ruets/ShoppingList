@@ -37,17 +37,14 @@ class Settings extends StatelessWidget {
             ),
           ),
 
-          const Text('\nSauvegarde et restauration (CLOUD NON IMPLEMENTE)', style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text('\nSauvegarde et restauration (NON IMPLEMENTE)', style: TextStyle(fontWeight: FontWeight.bold)),
 
           Card(
             color: Colors.white60,
             child: ListTile(
               title: const Text('Sauvegarde vers un fichier et partager'),
               onTap: () async {
-                    List<Item> list = await db.getItems(db.list);
-                    List<Item> cart = await db.getItems(db.cart);
-
-                    FilePersistence.SaveToFile(list, cart);
+                FilePersistence.saveToFile();
               },
             ),
           ),
@@ -57,12 +54,18 @@ class Settings extends StatelessWidget {
             child: ListTile(
               title: const Text('Importer depuis un fichier'),
               onTap: () {
-                showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment sauvegarder la liste ?', 'Annuler', 'Sauvegarder').then((value) {
+                showConfirmationDialog(context, 'Confirmation', 'Voulez vous continuer ? Cela va supprimer vos données existantes', 'Annuler', 'Continuer').then((value) {
                   if (value != null && value) {
-                    // TODO: import from file
+                    FilePersistence.readFromFile().then((value) {
+                      if (value) {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Données importées')));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erreur lors de l\'importation des données')));
+                      }
+                    });
                   }
                 });
-              },
+              }
             ),
           ),
 

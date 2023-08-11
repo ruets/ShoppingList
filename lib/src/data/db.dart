@@ -61,22 +61,28 @@ Future<bool> insertItem(Item item) async {
   }
 }
 
-Future<List<Item>> getItems(String category) async {
+Future<List<Item>> getItems(String? category) async {
   if (database == null) {
     throw Exception('Database not initialized');
   }
 
   final db = await database;
   final categoryBool = category == cart;
-  final List<Map<String, dynamic>>? maps = await db?.query('items', where: "inCart = ?", whereArgs: [categoryBool]);
+  final List<Map<String, dynamic>>? maps;
+
+  if (category == null) {
+    maps = await db?.query('items');
+  } else {
+    maps = await db?.query('items', where: "inCart = ?", whereArgs: [categoryBool]);
+  }
 
   return List.generate(maps!.length, (i) {
     return Item(
-      maps[i]['_id'],
-      maps[i]['name'],
-      maps[i]['inCart'] == 1,
-      maps[i]['price'],
-      maps[i]['count'],
+      maps?[i]['_id'],
+      maps?[i]['name'],
+      maps?[i]['inCart'] == 1,
+      maps?[i]['price'],
+      maps?[i]['count'],
     );
   });
 }
