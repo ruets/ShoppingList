@@ -21,7 +21,7 @@ class Settings extends StatelessWidget {
           Card(
             color: Colors.red,
             child: ListTile(
-              title: const Text('Vider la liste'),
+              title: const Text('Vider la liste ET le panier'),
               onTap: () {
                 showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ET du panier ?', 'Annuler', 'Supprimer').then((value) async {
                   if (value != null && value) {
