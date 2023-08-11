@@ -48,7 +48,7 @@ Future<bool> insertItem(Item item) async {
     throw Exception('Database not initialized');
   }
 
-  final db = await database;
+  final db = database;
   try {
     await db?.insert(
       'items',
@@ -66,7 +66,7 @@ Future<List<Item>> getItems(String? category) async {
     throw Exception('Database not initialized');
   }
 
-  final db = await database;
+  final db = database;
   final categoryBool = category == cart;
   final List<Map<String, dynamic>>? maps;
 
@@ -92,7 +92,7 @@ Future<Item> getItem(int id) async {
     throw Exception('Database not initialized');
   }
 
-  final db = await database;
+  final db = database;
   final List<Map<String, dynamic>>? maps = await db?.query('items', where: "_id = ?", whereArgs: [id]);
 
   return Item(
@@ -109,7 +109,7 @@ Future<bool> updateItem(Item item) async {
     throw Exception('Database not initialized');
   }
 
-  final db = await database;
+  final db = database;
   try {
     await db?.update(
       'items',
@@ -128,7 +128,7 @@ Future<bool> deleteItem(int id) async {
     throw Exception('Database not initialized');
   }
 
-  final db = await database;
+  final db = database;
   try {
     await db?.delete(
       'items',
@@ -146,7 +146,7 @@ Future<bool> deleteAllItems(String? category) async {
     throw Exception('Database not initialized');
   }
 
-  final db = await database;
+  final db = database;
 
   if (category == null) {
     try {

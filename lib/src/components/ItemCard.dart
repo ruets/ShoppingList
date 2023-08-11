@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/model/Item.dart';
 
-import 'package:ShoppingList/src/pages/ItemView.dart';
-
 class ItemCard extends StatelessWidget {
   const ItemCard({Key? key, required this.item, required this.onTap}) : super(key: key);
 
@@ -14,13 +12,13 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!item.getInCart()) {
       return Card(
-        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: ListTile(
             leading: CircleAvatar(
               child: Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: FittedBox(
                   // deux décimales après la virgule
                   child: Text('${item.count ?? 0} x'),
@@ -28,7 +26,7 @@ class ItemCard extends StatelessWidget {
               ),
             ),
             title: Text(item.name),
-            trailing: Icon(Icons.arrow_forward_ios),
+            trailing: const Icon(Icons.arrow_forward_ios),
 
             onTap: onTap,
           ),
@@ -36,13 +34,13 @@ class ItemCard extends StatelessWidget {
       );
     } else {
       return Card(
-        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: ListTile(
             leading: CircleAvatar(
               child: Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: FittedBox(
                   // deux décimales après la virgule
                   child: Text('${item.count} x'),

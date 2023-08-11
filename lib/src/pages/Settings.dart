@@ -1,4 +1,3 @@
-import 'package:ShoppingList/src/model/Item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ShoppingList/src/components/Confirmation.dart';

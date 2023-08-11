@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'src/pages/List.dart';
 import 'src/pages/Cart.dart';
 
-import 'src/pages/ItemView.dart';
-
 import 'package:ShoppingList/src/data/db.dart' as db;
 
 void main() {
