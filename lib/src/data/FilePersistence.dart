@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
@@ -53,7 +52,6 @@ Future<bool> readFromFile() async {
         db.insertItem(Item.fromJson(data[i]));
       }
 
-      DefaultCacheManager().emptyCache();
       return true;
     } else {
       return false;
