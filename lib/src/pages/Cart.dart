@@ -45,9 +45,15 @@ class _CartState extends State<Cart> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments du panier ?', 'Annuler', 'Supprimer').then((value) {
+              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments du panier ?', 'Annuler', 'Supprimer').then((value) async {
                 if (value != null && value) {
-                  db.deleteAllItems(db.cart);
+                  if (!await db.deleteAllItems(db.cart)) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erreur lors de la suppression des éléments du panier')));
+                  } else {
+                    setState(() {
+                      items = db.getItems(db.cart);
+                    });
+                  }
                 }
               });
             },
@@ -58,7 +64,11 @@ class _CartState extends State<Cart> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const Settings()),
-              );
+              ).then((value) {
+                setState(() {
+                  items = db.getItems(db.cart);
+                });
+              });
             },
           ),
         ],

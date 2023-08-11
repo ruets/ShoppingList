@@ -22,21 +22,25 @@ class Settings extends StatelessWidget {
             child: ListTile(
               title: const Text('Vider la liste'),
               onTap: () {
-                showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ET du panier ?', 'Annuler', 'Supprimer').then((value) {
+                showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ET du panier ?', 'Annuler', 'Supprimer').then((value) async {
                   if (value != null && value) {
-                    db.deleteAllItems(null);
+                    if (!await db.deleteAllItems(db.list) || !await db.deleteAllItems(db.cart)) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erreur lors de la suppression des éléments de la liste')));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Liste vidée')));
+                    }
                   }
                 });
               },
             ),
           ),
 
-          const Text('\nSauvegarde et restauration', style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text('\nSauvegarde et restauration (CLOUD NON IMPLEMENTE)', style: TextStyle(fontWeight: FontWeight.bold)),
 
           Card(
             color: Colors.white60,
             child: ListTile(
-              title: const Text('Sauvegarde vers un fichier'),
+              title: const Text('Sauvegarde vers un fichier et partager'),
               onTap: () {
                 showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment sauvegarder la liste ?', 'Annuler', 'Sauvegarder').then((value) {
                   if (value != null && value) {

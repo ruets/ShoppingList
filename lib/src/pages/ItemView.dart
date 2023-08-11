@@ -43,7 +43,7 @@ class _ItemViewState extends State<ItemView> {
         title: Text(_name ?? 'Add item'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
             onPressed: () async {
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
@@ -58,19 +58,34 @@ class _ItemViewState extends State<ItemView> {
                     Navigator.pop(context);
                   }
                 } else {
-                  db.updateItem(Item(widget.item!.id, _name!.trim(), _inCart!, _price, _count));
-                  Navigator.pop(context);
+                  if (!await db.updateItem(Item(widget.item!.id, _name!.trim(), _inCart!, _price, _count))) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Article non mis à jour'),
+                      ),
+                    );
+                  } else {
+                    Navigator.pop(context);
+                  }
                 }
               }
             },
           ),
 
           IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
               if (widget.item != null) {
-                db.deleteItem(widget.item!.id!);
-                Navigator.pop(context);
+                if (!await db.deleteItem(widget.item!.id!)) {
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Article non supprimé'),
+                    ),
+                  );
+                } else {
+                  Navigator.pop(context);
+                }
               }
             },
           ),
@@ -124,9 +139,9 @@ class _ItemViewState extends State<ItemView> {
                   children: [
                     const Text('Quantité'),
                     NumberPicker(
-                      minValue: _inCart == true ? 1 : 0,
+                      minValue: 0,
                       maxValue: 100,
-                      value: _count ?? (_inCart == true ? 1 : 0),
+                      value: _count ?? 0,
                       onChanged: (value) {
                         setState(() {
                           _count = value;

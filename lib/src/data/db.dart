@@ -11,7 +11,7 @@ const String cart = 'cart';
 
 Database? database;
 
-void init() async {
+Future<bool> init() async {
   const String _databaseName = 'database.db';
   const int _databaseVersion = 1;
 
@@ -39,6 +39,8 @@ void init() async {
     },
     version: _databaseVersion,
   );
+
+  return true;
 }
 
 Future<bool> insertItem(Item item) async {
@@ -96,34 +98,44 @@ Future<Item> getItem(int id) async {
   );
 }
 
-Future<void> updateItem(Item item) async {
+Future<bool> updateItem(Item item) async {
   if (database == null) {
     throw Exception('Database not initialized');
   }
 
   final db = await database;
-  await db?.update(
-    'items',
-    item.toMap(),
-    where: "_id = ?",
-    whereArgs: [item.getId()],
-  );
+  try {
+    await db?.update(
+      'items',
+      item.toMap(),
+      where: "_id = ?",
+      whereArgs: [item.getId()],
+    );
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
-Future<void> deleteItem(int id) async {
+Future<bool> deleteItem(int id) async {
   if (database == null) {
     throw Exception('Database not initialized');
   }
 
   final db = await database;
-  await db?.delete(
-    'items',
-    where: "_id = ?",
-    whereArgs: [id],
-  );
+  try {
+    await db?.delete(
+      'items',
+      where: "_id = ?",
+      whereArgs: [id],
+    );
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
-Future<void> deleteAllItems(String? category) async {
+Future<bool> deleteAllItems(String? category) async {
   if (database == null) {
     throw Exception('Database not initialized');
   }
@@ -131,9 +143,18 @@ Future<void> deleteAllItems(String? category) async {
   final db = await database;
 
   if (category == null) {
-    await db?.delete('items');
+    try {
+      await db?.delete('items');
+      return true;
+    } catch (e) {
+      return false;
+    }
   } else {
-    final categoryBool = category == cart;
-    await db?.delete('items', where: "inCart = ?", whereArgs: [categoryBool]);
+    try {
+      await db?.delete('items', where: "inCart = ?", whereArgs: [category == cart]);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

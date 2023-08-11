@@ -41,9 +41,15 @@ class _ListState extends State<List> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ?', 'Annuler', 'Supprimer').then((value) {
+              showConfirmationDialog(context, 'Confirmation', 'Voulez-vous vraiment supprimer tous les éléments de la liste ?', 'Annuler', 'Supprimer').then((value) async {
                 if (value != null && value) {
-                  db.deleteAllItems(db.list);
+                  if (!await db.deleteAllItems(db.list)) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erreur lors de la suppression des éléments de la liste')));
+                  } else {
+                    setState(() {
+                      items = db.getItems(db.list);
+                    });
+                  }
                 }
               });
             },
@@ -54,7 +60,11 @@ class _ListState extends State<List> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const Settings()),
-              );
+              ).then((value) {
+                setState(() {
+                  items = db.getItems(db.cart);
+                });
+              });
             },
           ),
         ],
