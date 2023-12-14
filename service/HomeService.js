@@ -1,5 +1,7 @@
 'use strict';
 
+var client = require('../prisma/client')
+var utils = require('../utils/utils.js');
 
 /**
  * Delete the home with the given id
@@ -9,7 +11,17 @@
  **/
 exports.homeDELETE = function(homeId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.home.delete({
+      where: {
+        id: homeId
+      }
+    })
+      .then((home) => {
+        resolve(home);
+      })
+      .catch(error => {
+        reject(error);
+      })
   });
 }
 
@@ -21,7 +33,13 @@ exports.homeDELETE = function(homeId) {
  **/
 exports.homeGET = function() {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.home.findMany()
+      .then(homes => {
+        resolve(homes);
+      })
+      .catch(error => {
+        reject(error);
+      })
   });
 }
 
@@ -34,7 +52,17 @@ exports.homeGET = function() {
  **/
 exports.homeGETbyID = function(homeId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.home.findUnique({
+      where: {
+        id: homeId
+      }
+    })
+      .then(home => {
+        resolve(home);
+      })
+      .catch( error => {
+        reject(error);
+      })
   });
 }
 
@@ -47,7 +75,20 @@ exports.homeGETbyID = function(homeId) {
  **/
 exports.homePOST = function(body) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.home.create({
+      data: {
+        name: body.name,
+        key: utils.generateKey(),
+        shops: [],
+        categories: []
+      }
+    })
+      .then((home) => {
+        resolve(home);
+      })
+      .catch(error => {
+        reject(error);
+      })
   });
 }
 
@@ -61,7 +102,20 @@ exports.homePOST = function(body) {
  **/
 exports.homePUT = function(body,homeId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.home.update({
+      where: {
+        id: homeId
+      },
+      data: {
+        name: body.name
+      }
+    })
+      .then((home) => {
+        resolve(home);
+      })
+      .catch(error => {
+        reject(error);
+      })
   });
 }
 
