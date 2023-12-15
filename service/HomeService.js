@@ -144,9 +144,7 @@ exports.homePOST = function(body) {
     client.home.create({
       data: {
         name: body.name,
-        key: utils.generateKey(),
-        shops: [],
-        categories: []
+        key: utils.generateKey()
       }
     })
       .then((home) => {
