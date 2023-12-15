@@ -11,28 +11,50 @@ datasource db {
 }
 
 model Home {
-  id    String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  key    String    @unique
-  shops    String[]
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  key  String  @unique
+
+  shops  Shop[]
+  categories  Category[]
 }
 
 model Shop {
-  id    String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  shoppingList    String[]
-  cart    String[]
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+
+  items  Item[]
+
+  home  Home  @relation(fields: [homeId], references: [id])
+  homeId  String  @db.ObjectId
+
+  @@unique([homeId, name])
 }
 
 model Item {
-  id    String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  quantity    Int
-  price    Float
-  category    String
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  quantity  Int
+  price  Float
+  inCart  Boolean  @default(false)
+
+  shop Shop  @relation(fields: [shopId], references: [id])
+  shopId  String  @db.ObjectId
+
+  category  Category  @relation(fields: [categoryId], references: [id])
+  categoryId  String  @db.ObjectId
+
+  @@unique([shopId, name])
 }
 
 model Category {
-  id    String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+
+  items  Item[]
+
+  home  Home  @relation(fields: [homeId], references: [id])
+  homeId  String  @db.ObjectId
+
+  @@unique([homeId, name])
 }

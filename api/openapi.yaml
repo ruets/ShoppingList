@@ -135,7 +135,7 @@ paths:
           description: Request correctly executed
         "400":
           description: Client error ?
-      x-swagger-router-controller: Home
+      x-swagger-router-controller: Shop
     post:
       tags:
       - Shop
@@ -247,7 +247,7 @@ paths:
           description: Request correctly executed
         "400":
           description: Client error ?
-      x-swagger-router-controller: Shop
+      x-swagger-router-controller: ShoppingList
     post:
       tags:
       - ShoppingList
@@ -313,7 +313,7 @@ paths:
           description: Request correctly executed
         "400":
           description: Client error ?
-      x-swagger-router-controller: Shop
+      x-swagger-router-controller: Cart
     post:
       tags:
       - Cart
@@ -426,7 +426,7 @@ paths:
           description: Client error ?
       x-swagger-router-controller: Item
   /item/{itemId}/moveToCart:
-    post:
+    put:
       tags:
       - Item
       summary: Move the item with the given id from the shopping list to the cart
@@ -447,7 +447,7 @@ paths:
           description: Client error ?
       x-swagger-router-controller: Item
   /item/{itemId}/moveToShoppingList:
-    post:
+    put:
       tags:
       - Item
       summary: Move the item with the given id from the cart to the shopping list
@@ -533,6 +533,72 @@ paths:
         "400":
           description: Client error ?
       x-swagger-router-controller: Category
+  /category/{categoryId}:
+    get:
+      tags:
+      - Category
+      summary: Return the category with the given id
+      operationId: categoryGETbyID
+      parameters:
+      - name: categoryId
+        in: path
+        description: Id of the category to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Request correctly executed
+        "400":
+          description: Client error ?
+      x-swagger-router-controller: Category
+    put:
+      tags:
+      - Category
+      summary: Update the category with the given id
+      operationId: categoryPUT
+      parameters:
+      - name: categoryId
+        in: path
+        description: Id of the category to update
+        required: true
+        style: simple
+        explode: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        "200":
+          description: Request correctly executed
+        "400":
+          description: Client error ?
+      x-swagger-router-controller: Category
+    delete:
+      tags:
+      - Category
+      summary: Delete the category with the given id
+      operationId: categoryDELETEbyID
+      parameters:
+      - name: categoryId
+        in: path
+        description: Id of the category to delete
+        required: true
+        style: simple
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Request correctly executed
+        "400":
+          description: Client error ?
+      x-swagger-router-controller: Category
 components:
   schemas:
     Home:
@@ -548,6 +614,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Shop'
+        categories:
+            type: array
+            items:
+              $ref: '#/components/schemas/Category'
     Shop:
       type: object
       properties:
@@ -555,11 +625,7 @@ components:
           type: string
         name:
           type: string
-        shoppingLists:
-          type: array
-          items:
-            $ref: '#/components/schemas/Item'
-        cart:
+        items:
           type: array
           items:
             $ref: '#/components/schemas/Item'
@@ -574,6 +640,8 @@ components:
           type: number
         quantity:
           type: integer
+        inCart:
+          type: boolean
         category:
           $ref: '#/components/schemas/Category'
     Category:
