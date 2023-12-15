@@ -1,5 +1,6 @@
 'use strict';
 
+var client = require('../prisma/client')
 
 /**
  * Delete the shop with the given id
@@ -9,7 +10,15 @@
  **/
 exports.shopDELETE = function(shopId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.shop.delete({
+      where: {
+        id: shopId
+      }
+    }).then((shop) => {
+      resolve(shop);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -22,7 +31,15 @@ exports.shopDELETE = function(shopId) {
  **/
 exports.shopGET = function(homeId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.shop.findMany({
+      where: {
+        homeId: homeId
+      }
+    }).then((shops) => {
+      resolve(shops);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -35,7 +52,15 @@ exports.shopGET = function(homeId) {
  **/
 exports.shopGETbyID = function(shopId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.shop.findUnique({
+      where: {
+        id: shopId
+      }
+    }).then((shop) => {
+      resolve(shop);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -49,7 +74,16 @@ exports.shopGETbyID = function(shopId) {
  **/
 exports.shopPOST = function(body,homeId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.shop.create({
+      data: {
+        name: body.name,
+        homeId: homeId
+      }
+    }).then((shop) => {
+      resolve(shop);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -63,7 +97,18 @@ exports.shopPOST = function(body,homeId) {
  **/
 exports.shopPUT = function(body,shopId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.shop.update({
+      where: {
+        id: shopId
+      },
+      data: {
+        name: body.name
+      }
+    }).then((shop) => {
+      resolve(shop);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
