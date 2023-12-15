@@ -1,5 +1,6 @@
 'use strict';
 
+var client = require("../prisma/client")
 
 /**
  * Delete all items in the shopping list for this shop
@@ -9,7 +10,16 @@
  **/
 exports.shoppingListDELETE = function(shopId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.item.deleteMany({
+      where: {
+        shopId: shopId,
+        inCart: false
+      }
+    }).then((shoppingList) => {
+      resolve(shoppingList);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -22,7 +32,16 @@ exports.shoppingListDELETE = function(shopId) {
  **/
 exports.shoppingListGET = function(shopId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.item.findMany({
+      where: {
+        shopId: shopId,
+        inCart: false
+      }
+    }).then((shoppingList) => {
+      resolve(shoppingList);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -36,7 +55,20 @@ exports.shoppingListGET = function(shopId) {
  **/
 exports.shoppingListPOST = function(body,shopId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.item.create({
+      data: {
+        name: body.name,
+        quantity: body.quantity,
+        price: body.price,
+        inCart: false,
+        shopId: shopId,
+        categoryId: body.categoryId
+      }
+    }).then((shoppingList) => {
+      resolve(shoppingList);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
