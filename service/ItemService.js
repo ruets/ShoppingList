@@ -1,5 +1,6 @@
 'use strict';
 
+var client = require("../prisma/client")
 
 /**
  * Delete the item with the given id
@@ -9,7 +10,15 @@
  **/
 exports.itemDELETE = function(itemId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.item.delete({
+      where: {
+        id: itemId
+      }
+    }).then((item) => {
+      resolve(item);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -22,7 +31,15 @@ exports.itemDELETE = function(itemId) {
  **/
 exports.itemGETbyID = function(itemId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.item.findUnique({
+      where: {
+        id: itemId
+      }
+    }).then((item) => {
+      resolve(item);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -35,7 +52,18 @@ exports.itemGETbyID = function(itemId) {
  **/
 exports.itemMoveToCart = function(itemId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.item.update({
+      where: {
+        id: itemId
+      },
+      data: {
+        inCart: true
+      }
+    }).then((item) => {
+      resolve(item);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -48,7 +76,18 @@ exports.itemMoveToCart = function(itemId) {
  **/
 exports.itemMoveToShoppingList = function(itemId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.item.update({
+      where: {
+        id: itemId
+      },
+      data: {
+        inCart: false
+      }
+    }).then((item) => {
+      resolve(item);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
@@ -62,7 +101,22 @@ exports.itemMoveToShoppingList = function(itemId) {
  **/
 exports.itemPUT = function(body,itemId) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    client.item.update({
+      where: {
+        id: itemId
+      },
+      data: {
+        name: body.name,
+        quantity: body.quantity,
+        price: body.price,
+        shopId: body.shopId,
+        categoryId: body.categoryId
+      }
+    }).then((item) => {
+      resolve(item);
+    }).catch((error) => {
+      reject(error);
+    })
   });
 }
 
