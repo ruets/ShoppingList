@@ -15,7 +15,25 @@ exports.categoryDELETE = function(homeId) {
         homeId: homeId
       }
     }).then((categories) => {
-      resolve(categories);
+      resolve(
+        {
+          "description": "All categories for this home deleted",
+          "links": [
+            {
+              "href": "/home/" + homeId + "/category",
+              "rel": "category",
+              "method": "GET",
+              "description": "Return the list of all categories for this home"
+            },
+            {
+              "href": "/home/" + homeId + "/category",
+              "rel": "category",
+              "method": "POST",
+              "description": "Add a category for this home"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -36,7 +54,25 @@ exports.categoryDELETEbyID = function(categoryId) {
         id: categoryId
       }
     }).then((category) => {
-      resolve(category);
+      resolve(
+        {
+          "description": "Category deleted",
+          "links": [
+            {
+              "href": "/home/" + category.homeId + "/category",
+              "rel": "category",
+              "method": "GET",
+              "description": "Return the list of all categories for this home"
+            },
+            {
+              "href": "/home/" + category.homeId + "/category",
+              "rel": "category",
+              "method": "POST",
+              "description": "Add a category for this home"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -57,6 +93,28 @@ exports.categoryGET = function(homeId) {
         homeId: homeId
       }
     }).then((categories) => {
+      categories.forEach(category => {
+        category.links = [
+          {
+            "href": "/category/" + category.id,
+            "rel": "category",
+            "method": "GET",
+            "description": "Return the category with the given id"
+          },
+          {
+            "href": "/category/" + category.id,
+            "rel": "category",
+            "method": "PUT",
+            "description": "Update the category with the given id"
+          },
+          {
+            "href": "/category/" + category.id,
+            "rel": "category",
+            "method": "DELETE",
+            "description": "Delete the category with the given id"
+          }
+        ]
+      });
       resolve(categories);
     }).catch((error) => {
       reject(error);
@@ -81,6 +139,28 @@ exports.categoryGETbyID = function(categoryId) {
         items: true
       }
     }).then((category) => {
+      category?.items.forEach(item => {
+        item.links = [
+          {
+            "href": "/item/" + item.id,
+            "rel": "item",
+            "method": "GET",
+            "description": "Return the item with the given id"
+          },
+          {
+            "href": "/item/" + item.id,
+            "rel": "item",
+            "method": "PUT",
+            "description": "Update the item with the given id"
+          },
+          {
+            "href": "/item/" + item.id,
+            "rel": "item",
+            "method": "DELETE",
+            "description": "Delete the item with the given id"
+          }
+        ]
+      });
       resolve(category);
     }).catch((error) => {
       reject(error);
@@ -104,7 +184,32 @@ exports.categoryPOST = function(body,homeId) {
         homeId: homeId
       }
     }).then((category) => {
-      resolve(category);
+      resolve(
+        {
+          "description": "Category created",
+          "category": category,
+          "links": [
+            {
+              "href": "/category/" + category.id,
+              "rel": "category",
+              "method": "GET",
+              "description": "Return the category with the given id"
+            },
+            {
+              "href": "/category/" + category.id,
+              "rel": "category",
+              "method": "PUT",
+              "description": "Update the category with the given id"
+            },
+            {
+              "href": "/category/" + category.id,
+              "rel": "category",
+              "method": "DELETE",
+              "description": "Delete the category with the given id"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -129,7 +234,32 @@ exports.categoryPUT = function(body,categoryId) {
         name: body.name
       }
     }).then((category) => {
-      resolve(category);
+      resolve(
+        {
+          "description": "Category updated",
+          "category": category,
+          "links": [
+            {
+              "href": "/category/" + category.id,
+              "rel": "category",
+              "method": "GET",
+              "description": "Return the category with the given id"
+            },
+            {
+              "href": "/category/" + category.id,
+              "rel": "category",
+              "method": "PUT",
+              "description": "Update the category with the given id"
+            },
+            {
+              "href": "/category/" + category.id,
+              "rel": "category",
+              "method": "DELETE",
+              "description": "Delete the category with the given id"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })

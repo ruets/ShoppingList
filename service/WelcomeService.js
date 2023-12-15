@@ -8,7 +8,31 @@
  **/
 exports.rootGET = function() {
   return new Promise(function(resolve, reject) {
-    resolve();
+    resolve(
+      {
+        "description": "This is the API for the ShoppingList application",
+        "methods": [
+          {
+            "href": "/home",
+            "rel": "home",
+            "method": "GET",
+            "description": "Return the list of all homes"
+          },
+          {
+            "href": "/home",
+            "rel": "home",
+            "method": "POST",
+            "description": "Add a home"
+          },
+          {
+            "href": "/docs",
+            "rel": "docs",
+            "method": "GET",
+            "description": "Return the Swagger documentation"
+          }
+        ]
+      }
+    );
   });
 }
 

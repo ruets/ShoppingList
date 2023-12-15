@@ -15,7 +15,25 @@ exports.shopDELETE = function(shopId) {
         id: shopId
       }
     }).then((shop) => {
-      resolve(shop);
+      resolve(
+        {
+          "description": "Shop deleted",
+          "links": [
+            {
+              "href": "/home" + shop.homeId + "/shop",
+              "rel": "shop",
+              "method": "GET",
+              "description": "Return the list of all shops for this home"
+            },
+            {
+              "href": "/home" + shop.homeId + "/shop",
+              "rel": "shop",
+              "method": "POST",
+              "description": "Add a shop for this home"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -36,6 +54,28 @@ exports.shopGET = function(homeId) {
         homeId: homeId
       }
     }).then((shops) => {
+      shops.forEach(shop => {
+        shop.links = [
+          {
+            "href": "/shop/" + shop.id,
+            "rel": "shop",
+            "method": "GET",
+            "description": "Return the shop with the given id"
+          },
+          {
+            "href": "/shop/" + shop.id,
+            "rel": "shop",
+            "method": "PUT",
+            "description": "Update the shop with the given id"
+          },
+          {
+            "href": "/shop/" + shop.id,
+            "rel": "shop",
+            "method": "DELETE",
+            "description": "Delete the shop with the given id"
+          }
+        ]
+      });
       resolve(shops);
     }).catch((error) => {
       reject(error);
@@ -57,6 +97,44 @@ exports.shopGETbyID = function(shopId) {
         id: shopId
       }
     }).then((shop) => {
+      shop.links = [
+        {
+          "href": "/shop/" + shop.id + "/shoppingList",
+          "rel": "shoppingList",
+          "method": "GET",
+          "description": "Return the list of all items in the shopping list for this shop"
+        },
+        {
+          "href": "/shop/" + shop.id + "/shoppingList",
+          "rel": "shoppingList",
+          "method": "POST",
+          "description": "Add an item in the shopping list for this shop"
+        },
+        {
+          "href": "/shop/" + shop.id + "/shoppingList",
+          "rel": "shoppingList",
+          "method": "DELETE",
+          "description": "Delete all items in the shopping list for this shop"
+        },
+        {
+          "href": "/shop/" + shop.id + "/cart",
+          "rel": "cart",
+          "method": "GET",
+          "description": "Return the list of all items in the cart for this shop"
+        },
+        {
+          "href": "/shop/" + shop.id + "/cart",
+          "rel": "cart",
+          "method": "POST",
+          "description": "Add an item in the cart for this shop"
+        },
+        {
+          "href": "/shop/" + shop.id + "/cart",
+          "rel": "cart",
+          "method": "DELETE",
+          "description": "Delete all items in the cart for this shop"
+        }
+      ]
       resolve(shop);
     }).catch((error) => {
       reject(error);
@@ -80,7 +158,32 @@ exports.shopPOST = function(body,homeId) {
         homeId: homeId
       }
     }).then((shop) => {
-      resolve(shop);
+      resolve(
+        {
+          "description": "Shop created",
+          "shop": shop,
+          "links": [
+            {
+              "href": "/shop/" + shop.id,
+              "rel": "shop",
+              "method": "GET",
+              "description": "Return the shop with the given id"
+            },
+            {
+              "href": "/shop/" + shop.id,
+              "rel": "shop",
+              "method": "PUT",
+              "description": "Update the shop with the given id"
+            },
+            {
+              "href": "/shop/" + shop.id,
+              "rel": "shop",
+              "method": "DELETE",
+              "description": "Delete the shop with the given id"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -105,7 +208,32 @@ exports.shopPUT = function(body,shopId) {
         name: body.name
       }
     }).then((shop) => {
-      resolve(shop);
+      resolve(
+        {
+          "description": "Shop updated",
+          "shop": shop,
+          "links": [
+            {
+              "href": "/shop/" + shop.id,
+              "rel": "shop",
+              "method": "GET",
+              "description": "Return the shop with the given id"
+            },
+            {
+              "href": "/shop/" + shop.id,
+              "rel": "shop",
+              "method": "PUT",
+              "description": "Update the shop with the given id"
+            },
+            {
+              "href": "/shop/" + shop.id,
+              "rel": "shop",
+              "method": "DELETE",
+              "description": "Delete the shop with the given id"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })

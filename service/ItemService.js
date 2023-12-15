@@ -15,7 +15,37 @@ exports.itemDELETE = function(itemId) {
         id: itemId
       }
     }).then((item) => {
-      resolve(item);
+      resolve(
+        {
+          "description": "Item deleted",
+          "links": [
+            {
+              "href": "/shop/" + item.shopId + "/shoppingList",
+              "rel": "shoppingList",
+              "method": "GET",
+              "description": "Return the list of all items in the shopping list for this shop"
+            },
+            {
+              "href": "/shop/" + item.shopId + "/shoppingList",
+              "rel": "shoppingList",
+              "method": "POST",
+              "description": "Add an item in the shopping list for this shop"
+            },
+            {
+              "href": "/shop/" + item.shopId + "/cart",
+              "rel": "cart",
+              "method": "GET",
+              "description": "Return the list of all items in the cart for this shop"
+            },
+            {
+              "href": "/shop/" + item.shopId + "/cart",
+              "rel": "cart",
+              "method": "POST",
+              "description": "Add an item in the cart for this shop"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -36,6 +66,20 @@ exports.itemGETbyID = function(itemId) {
         id: itemId
       }
     }).then((item) => {
+      item.links = [
+        {
+          "href": "/item/" + item.id + "/moveToCart",
+          "rel": "moveToCart",
+          "method": "PUT",
+          "description": "Move the item with the given id from the shopping list to the cart"
+        },
+        {
+          "href": "/item/" + item.id + "/moveToShoppingList",
+          "rel": "moveToShoppingList",
+          "method": "PUT",
+          "description": "Move the item with the given id from the cart to the shopping list"
+        }
+      ]
       resolve(item);
     }).catch((error) => {
       reject(error);
@@ -60,7 +104,27 @@ exports.itemMoveToCart = function(itemId) {
         inCart: true
       }
     }).then((item) => {
-      resolve(item);
+      resolve(
+        {
+
+          "description": "Item moved to cart",
+          "item": item,
+          "links": [
+            {
+              "href": "/item/" + item.id + "/moveToCart",
+              "rel": "moveToCart",
+              "method": "PUT",
+              "description": "Move the item with the given id from the shopping list to the cart"
+            },
+            {
+              "href": "/item/" + item.id + "/moveToShoppingList",
+              "rel": "moveToShoppingList",
+              "method": "PUT",
+              "description": "Move the item with the given id from the cart to the shopping list"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -84,7 +148,27 @@ exports.itemMoveToShoppingList = function(itemId) {
         inCart: false
       }
     }).then((item) => {
-      resolve(item);
+      resolve(
+        {
+
+          "description": "Item moved to shopping list",
+          "item": item,
+          "links": [
+            {
+              "href": "/item/" + item.id + "/moveToCart",
+              "rel": "moveToCart",
+              "method": "PUT",
+              "description": "Move the item with the given id from the shopping list to the cart"
+            },
+            {
+              "href": "/item/" + item.id + "/moveToShoppingList",
+              "rel": "moveToShoppingList",
+              "method": "PUT",
+              "description": "Move the item with the given id from the cart to the shopping list"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -113,7 +197,32 @@ exports.itemPUT = function(body,itemId) {
         categoryId: body.categoryId
       }
     }).then((item) => {
-      resolve(item);
+      resolve(
+        {
+          "description": "Item updated",
+          "item": item,
+          "links": [
+            {
+              "href": "/item/" + item.id,
+              "rel": "item",
+              "method": "GET",
+              "description": "Return the item with the given id"
+            },
+            {
+              "href": "/item/" + item.id,
+              "rel": "item",
+              "method": "PUT",
+              "description": "Update the item with the given id"
+            },
+            {
+              "href": "/item/" + item.id,
+              "rel": "item",
+              "method": "DELETE",
+              "description": "Delete the item with the given id"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })

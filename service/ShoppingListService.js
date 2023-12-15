@@ -16,7 +16,25 @@ exports.shoppingListDELETE = function(shopId) {
         inCart: false
       }
     }).then((shoppingList) => {
-      resolve(shoppingList);
+      resolve(
+        {
+          "description": "All items in the shopping list for this shop deleted",
+          "links": [
+            {
+              "href": "/shop/" + shopId + "/shoppingList",
+              "rel": "shoppingList",
+              "method": "GET",
+              "description": "Return the list of all items in the shopping list for this shop"
+            },
+            {
+              "href": "/shop/" + shopId + "/shoppingList",
+              "rel": "shoppingList",
+              "method": "POST",
+              "description": "Add an item in the shopping list for this shop"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })
@@ -38,6 +56,28 @@ exports.shoppingListGET = function(shopId) {
         inCart: false
       }
     }).then((shoppingList) => {
+      shoppingList.forEach(item => {
+        item.links = [
+          {
+            "href": "/item/" + item.id,
+            "rel": "item",
+            "method": "GET",
+            "description": "Return the item with the given id"
+          },
+          {
+            "href": "/item/" + item.id,
+            "rel": "item",
+            "method": "PUT",
+            "description": "Update the item with the given id"
+          },
+          {
+            "href": "/item/" + item.id,
+            "rel": "item",
+            "method": "DELETE",
+            "description": "Delete the item with the given id"
+          }
+        ]
+      });
       resolve(shoppingList);
     }).catch((error) => {
       reject(error);
@@ -64,8 +104,33 @@ exports.shoppingListPOST = function(body,shopId) {
         shopId: shopId,
         categoryId: body.categoryId
       }
-    }).then((shoppingList) => {
-      resolve(shoppingList);
+    }).then((item) => {
+      resolve(
+        {
+          "description": "Item added to the shopping list for this shop",
+          "shoppingList": item,
+          "links": [
+            {
+              "href": "/item/" + item.id,
+              "rel": "item",
+              "method": "GET",
+              "description": "Return the item with the given id"
+            },
+            {
+              "href": "/item/" + item.id,
+              "rel": "item",
+              "method": "PUT",
+              "description": "Update the item with the given id"
+            },
+            {
+              "href": "/item/" + item.id,
+              "rel": "item",
+              "method": "DELETE",
+              "description": "Delete the item with the given id"
+            }
+          ]
+        }
+      );
     }).catch((error) => {
       reject(error);
     })

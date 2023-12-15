@@ -17,7 +17,25 @@ exports.homeDELETE = function(homeId) {
       }
     })
       .then((home) => {
-        resolve(home);
+        resolve(
+          {
+            "description": "Home deleted",
+            "links": [
+              {
+                "href": "/home",
+                "rel": "home",
+                "method": "GET",
+                "description": "Return the list of all homes"
+              },
+              {
+                "href": "/home",
+                "rel": "home",
+                "method": "POST",
+                "description": "Add a home"
+              }
+            ]
+          }
+        );
       })
       .catch(error => {
         reject(error);
@@ -35,6 +53,28 @@ exports.homeGET = function() {
   return new Promise(function(resolve, reject) {
     client.home.findMany()
       .then(homes => {
+        homes.forEach(home => {
+          home.links = [
+            {
+              "href": "/home/" + home.id,
+              "rel": "home",
+              "method": "GET",
+              "description": "Return the home with the given id"
+            },
+            {
+              "href": "/home/" + home.id,
+              "rel": "home",
+              "method": "PUT",
+              "description": "Update the home with the given id"
+            },
+            {
+              "href": "/home/" + home.id,
+              "rel": "home",
+              "method": "DELETE",
+              "description": "Delete the home with the given id"
+            }
+          ];
+        });
         resolve(homes);
       })
       .catch(error => {
@@ -58,6 +98,32 @@ exports.homeGETbyID = function(homeId) {
       }
     })
       .then(home => {
+        home.links = [
+          {
+            "href": "/home/" + home.id + "/shop",
+            "rel": "shop",
+            "method": "GET",
+            "description": "Return the list of all shops for this home"
+          },
+          {
+            "href": "/home/" + home.id + "/shop",
+            "rel": "shop",
+            "method": "POST",
+            "description": "Add a shop to this home"
+          },
+          {
+            "href": "/home/" + home.id + "/category",
+            "rel": "category",
+            "method": "GET",
+            "description": "Return the list of all categories for this home"
+          },
+          {
+            "href": "/home/" + home.id + "/category",
+            "rel": "category",
+            "method": "POST",
+            "description": "Add a category to this home"
+          }
+        ];
         resolve(home);
       })
       .catch( error => {
@@ -84,7 +150,32 @@ exports.homePOST = function(body) {
       }
     })
       .then((home) => {
-        resolve(home);
+        resolve(
+          {
+            "description": "Home created",
+            "home": home,
+            "links": [
+              {
+                "href": "/home/" + home.id,
+                "rel": "home",
+                "method": "GET",
+                "description": "Return the home with the given id"
+              },
+              {
+                "href": "/home/" + home.id,
+                "rel": "home",
+                "method": "PUT",
+                "description": "Update the home with the given id"
+              },
+              {
+                "href": "/home/" + home.id,
+                "rel": "home",
+                "method": "DELETE",
+                "description": "Delete the home with the given id"
+              }
+            ]
+          }
+        );
       })
       .catch(error => {
         reject(error);
@@ -111,7 +202,32 @@ exports.homePUT = function(body,homeId) {
       }
     })
       .then((home) => {
-        resolve(home);
+        resolve(
+          {
+            "description": "Home updated",
+            "home": home,
+            "links": [
+              {
+                "href": "/home/" + home.id,
+                "rel": "home",
+                "method": "GET",
+                "description": "Return the home with the given id"
+              },
+              {
+                "href": "/home/" + home.id,
+                "rel": "home",
+                "method": "PUT",
+                "description": "Update the home with the given id"
+              },
+              {
+                "href": "/home/" + home.id,
+                "rel": "home",
+                "method": "DELETE",
+                "description": "Delete the home with the given id"
+              }
+            ]
+          }
+        );
       })
       .catch(error => {
         reject(error);
